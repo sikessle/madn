@@ -1,0 +1,250 @@
+package de.htwg.madn.controller;
+
+import java.awt.Color;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import de.htwg.madn.model.IGameSettings;
+import de.htwg.madn.model.IModelPort;
+import de.htwg.madn.model.Player;
+import de.htwg.madn.util.observer.Observable;
+
+public final class BoardController extends Observable implements
+		IBoardControllerPort {
+
+	private String status = "";
+	private Player activePlayer;
+	// without finished players
+	private Queue<Player> activePlayersQueue;
+	// finished players
+	private Queue<Player> finishedPlayersQueue;
+	private boolean gameIsRunning;
+	private final IGameSettings settings;
+	private MovementController movementController;
+	private final IModelPort model;
+
+	public BoardController(IModelPort model) {
+		this.model = model;
+		this.settings = model.getSettings();
+		init();
+		notifyObservers();
+	}
+
+	private void init() {
+		this.activePlayersQueue = new LinkedList<Player>();
+		this.finishedPlayersQueue = new LinkedList<Player>();
+		this.activePlayer = null;
+		this.status = "New Game created.";
+		this.gameIsRunning = false;
+		this.movementController = new MovementController(model);
+		this.movementController.addObserver(this);
+	}
+
+	@Override
+	public void update() {
+		status = movementController.getStatusString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#getBoard()
+	 */
+	@Override
+	public IModelPort getModelPort() {
+		return model;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#getSettings()
+	 */
+	@Override
+	public IGameSettings getSettings() {
+		return settings;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#addPlayer(java.lang.String,
+	 * java.awt.Color, boolean)
+	 */
+	@Override
+	public void addPlayer(final String name, final Color col, boolean isHuman) {
+		Player newPlayer = model.addPlayer(col, name, isHuman);
+
+		if (newPlayer == null) {
+			status = "Maximum amount of players reached: "
+					+ settings.getMaxPlayers();
+		} else {
+			activePlayersQueue.add(newPlayer);
+			status = "Player " + newPlayer.getId() + " \""
+					+ newPlayer.getName() + "\" added.";
+		}
+
+		notifyObservers();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#throwDice()
+	 */
+	@Override
+	public void rollDice() {
+		boolean setNextPlayer = false;
+
+		if (!gameIsRunning) {
+			status = "Please start the game first";
+		} else {
+			setNextPlayer = movementController.rollDice(activePlayer);
+		}
+
+		if (setNextPlayer) {
+			setNextActivePlayer();
+		}
+		notifyObservers();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#reset()
+	 */
+	@Override
+	public void reset() {
+		model.reset();
+		init();
+		status = "Reset: New Game created.";
+		notifyObservers();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#moveFigure(char)
+	 */
+	@Override
+	public void moveFigure(char figureLetter) {
+		boolean setNext = movementController.moveFigure(activePlayer,
+				figureLetter);
+
+		if (setNext) {
+			setNextActivePlayer();
+		}
+		notifyObservers();
+	}
+
+	private void handleFinishedPlayer(Player player) {
+		if (player == null) {
+			return;
+		}
+		if (!movementController.hasActiveFigures(player)) {
+			finishedPlayersQueue.add(player);
+			activePlayersQueue.remove(player);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#startGame()
+	 */
+	@Override
+	public void startGame() {
+
+		if (gameIsRunning) {
+			status = "Spiel laeuft schon!";
+		} else if (activePlayersQueue.size() < settings.getMinPlayers()) {
+			status = "Too few players. At least " + settings.getMinPlayers()
+					+ " players required.";
+		} else {
+			setNextActivePlayer();
+			status = "Spiel beginnt.";
+			gameIsRunning = true;
+		}
+		notifyObservers();
+	}
+
+	private void setNextActivePlayer() {
+		// reset dice
+		model.getDice().resetThrowsCount();
+		// check and maybe remove a finished player
+		handleFinishedPlayer(activePlayer);
+		// get from head and remove
+		activePlayer = activePlayersQueue.poll();
+		// no more Players!
+		if (activePlayer == null) {
+			return;
+		}
+		// push to tail of queue
+		activePlayersQueue.add(activePlayer);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#getFinishedPlayersQueue()
+	 */
+	@Override
+	public Queue<Player> getFinishedPlayersQueue() {
+		return finishedPlayersQueue;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#getPlayers()
+	 */
+	@Override
+	public List<Player> getPlayers() {
+		return model.getPlayers();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#getStatusString()
+	 */
+	@Override
+	public String getStatusString() {
+		return status;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#getActivePlayer()
+	 */
+	@Override
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.controller.IBoardController#getActivePlayerString()
+	 */
+	@Override
+	public String getActivePlayerString() {
+		if (activePlayer != null) {
+			return activePlayer.getName();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean gameIsFinished() {
+		return activePlayersQueue.isEmpty() && gameIsRunning;
+	}
+
+	@Override
+	public boolean gameIsRunning() {
+		return this.gameIsRunning;
+	}
+
+}
