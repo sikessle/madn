@@ -1,102 +1,106 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" >
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>
+	<modelVersion>
 4.0.0
     </modelVersion>
 
-    <groupId>
+	<groupId>
 MADN
     </groupId>
 
-    <artifactId>
-MADN
-    </artifactId>
+	<artifactId>de.htwg.sa.madn</artifactId>
 
-    <version>
-0.0.1-SNAPSHOT
-    </version>
+	<version>0.1.0</version>
 
-    <name>
+	<name>
 madn
     </name>
 
-    <build>
+	<build>
 
-        <sourceDirectory>
+		<sourceDirectory>
 src
         </sourceDirectory>
 
-        <testSourceDirectory>
+		<testSourceDirectory>
 test
         </testSourceDirectory>
 
-        <plugins>
+		<plugins>
 
-            <plugin>
+			<plugin>
 
-                <artifactId>
+				<artifactId>
 maven-compiler-plugin
                 </artifactId>
 
-                <version>
+				<version>
 2.3.2
                 </version>
 
-                <configuration>
+				<configuration>
 
-                    <source>
-1.6
-                    </source>
+					<source>
+						1.6
+					</source>
 
-                    <target>
-1.6
-                    </target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+					<target>
+						1.6
+					</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-    <dependencies>
+	<dependencies>
 
-        <dependency>
+		<dependency>
 
-            <groupId>
+			<groupId>
 junit
             </groupId>
 
-            <artifactId>
+			<artifactId>
 junit
             </artifactId>
 
-            <version>
+			<version>
 4.8.1
             </version>
 
-            <scope>
+			<scope>
 test
             </scope>
-        </dependency>
+		</dependency>
 
-        <dependency>
+		<dependency>
 
-            <groupId>
+			<groupId>
 log4j
             </groupId>
 
-            <artifactId>
+			<artifactId>
 log4j
             </artifactId>
 
-            <version>
+			<version>
 1.2.14
             </version>
 
-            <scope>
+			<scope>
 provided
             </scope>
-        </dependency>
-    </dependencies>
+		</dependency>
+	</dependencies>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>lenny2</id>
+			<name>lenny2-snapshots</name>
+			<url>http://lenny2.in.htwg-konstanz.de:8081/artifactory/libs-snapshot-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
