@@ -2,7 +2,6 @@ package de.htwg.madn.view.tui;
 
 import static org.junit.Assert.assertTrue;
 
-
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,54 +32,51 @@ public class TUIViewTest {
 
 	@Before
 	public void setUp() throws Exception {
-		settings = new GameSettings(MINPLAYERS, MAXPLAYERS,
-				FIGURESPERPLAYER, PUBLICFIELDSCOUNT, DICEMIN, DICEMAX,
-				MINNUMBERTOEXITHOME, THROWSALLOWEDINHOME, THROWSALLOWEDINPUBLIC);
+		settings = new GameSettings(MINPLAYERS, MAXPLAYERS, FIGURESPERPLAYER,
+				PUBLICFIELDSCOUNT, DICEMIN, DICEMAX, MINNUMBERTOEXITHOME,
+				THROWSALLOWEDINHOME, THROWSALLOWEDINPUBLIC);
 
 		model = new ModelPort(settings, new Board(settings));
 		PropertyConfigurator.configure("log4j.properties");
 		boardController = new BoardController(model);
 		tui = new TUIView(boardController);
 		// active waiting => infinite loop
-			
-	}
 
+	}
 
 	@Test
 	public void testHandleInput() {
-		assertTrue(!tui.handleInput("add p1"));
+		assertTrue(!tui.handleInput("add:p1"));
 		assertTrue(!tui.handleInput("add"));
 		assertTrue(!tui.handleInput("w"));
 		assertTrue(!tui.handleInput("s"));
-		assertTrue(!tui.handleInput("m a"));
+		assertTrue(!tui.handleInput("m:a"));
 		assertTrue(!tui.handleInput("m"));
 		assertTrue(!tui.handleInput("r"));
-		
+
 		assertTrue(!tui.handleInput("asdasdas"));
 		assertTrue(!tui.handleInput(""));
 		assertTrue(!tui.handleInput("  "));
-		
+
 		assertTrue(tui.handleInput("q"));
 	}
-	
+
 	@Test
 	public void finish() {
-		assertTrue(!tui.handleInput("add p1"));
-		assertTrue(!tui.handleInput("add"));		
+		assertTrue(!tui.handleInput("add:p1"));
+		assertTrue(!tui.handleInput("add"));
 		assertTrue(!tui.handleInput("s"));
 		assertTrue(!tui.handleInput("w"));
-		assertTrue(!tui.handleInput("m a"));
+		assertTrue(!tui.handleInput("m:a"));
 		assertTrue(!tui.handleInput("w"));
-		assertTrue(!tui.handleInput("m a"));
+		assertTrue(!tui.handleInput("m:a"));
 		assertTrue(!tui.handleInput("w"));
-		assertTrue(!tui.handleInput("m a"));
+		assertTrue(!tui.handleInput("m:a"));
 		assertTrue(!tui.handleInput("w"));
-		assertTrue(!tui.handleInput("m a"));
+		assertTrue(!tui.handleInput("m:a"));
 		assertTrue(!tui.handleInput("w"));
-		assertTrue(tui.handleInput("m a"));
-		
-	}
-	
+		assertTrue(!tui.handleInput("m:a"));
 
+	}
 
 }
