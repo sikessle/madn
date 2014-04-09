@@ -4,9 +4,13 @@ import java.util.Scanner;
 
 import org.apache.log4j.PropertyConfigurator;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import de.htwg.madn.controller.BoardController;
 import de.htwg.madn.controller.IBoardControllerPort;
 import de.htwg.madn.model.Board;
+import de.htwg.madn.model.Db4oModelModule;
 import de.htwg.madn.model.GameSettings;
 import de.htwg.madn.model.IGameSettings;
 import de.htwg.madn.model.IModelPort;
@@ -32,6 +36,8 @@ public final class Application {
 	}
 
 	public static void main(String[] args) {
+
+		Injector injector = Guice.createInjector(new Db4oModelModule());
 
 		PropertyConfigurator.configure("log4j.properties");
 

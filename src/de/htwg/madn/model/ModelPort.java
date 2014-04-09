@@ -4,14 +4,15 @@ import java.awt.Color;
 import java.util.List;
 
 public final class ModelPort implements IModelPort {
-	
-	private final IGameSettings settings;
-	private final Board board;
 
-	public ModelPort(IGameSettings settings, Board board) {
+	private final IGameSettings settings;
+	private final IBoard board;
+
+	public ModelPort(IGameSettings settings, IBoard board) {
 		this.settings = settings;
 		this.board = board;
 	}
+
 	@Override
 	public void reset() {
 		board.reset();
@@ -56,9 +57,5 @@ public final class ModelPort implements IModelPort {
 	public List<FinishField> getFinishFields() {
 		return board.getFinishFields();
 	}
-
-	
-
-
 
 }
