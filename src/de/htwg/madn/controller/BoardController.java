@@ -120,6 +120,8 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public void reset() {
+		// FIXME we need to get a new model instance! Resetting is not working
+		// as it affects the already saved game
 		model.reset();
 		init();
 		status = "Game State reset.";
