@@ -151,8 +151,9 @@ public final class TUIView implements IObserver {
 		GameId id = boardController.getModel().getGameId();
 		if (id != null) {
 			return "current game id: " + id.toString();
+		} else {
+			return "current game not yet saved";
 		}
-		return "";
 	}
 
 	private String getPlayerSettingString() {

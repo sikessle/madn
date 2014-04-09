@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import de.htwg.madn.model.GameId;
 import de.htwg.madn.model.IBoard;
@@ -27,11 +28,13 @@ public final class BoardController extends Observable implements
 	private MovementController movementController;
 	private IBoard model;
 	private final IModelDao modelDao;
+	private final Injector injector;
 
 	@Inject
-	public BoardController(IModelDao modelDao, IBoard model) {
+	public BoardController(IModelDao modelDao, Injector injector) {
 		this.modelDao = modelDao;
-		this.model = model;
+		this.model = injector.getInstance(IBoard.class);
+		this.injector = injector;
 		init();
 	}
 
@@ -120,9 +123,7 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public void reset() {
-		// FIXME we need to get a new model instance! Resetting is not working
-		// as it affects the already saved game
-		model.reset();
+		model = injector.getInstance(IBoard.class);
 		init();
 		status = "Game State reset.";
 		notifyObservers();

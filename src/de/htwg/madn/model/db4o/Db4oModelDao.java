@@ -68,7 +68,7 @@ public class Db4oModelDao implements IModelDao {
 
 	private GameId getNextFreeGameId() {
 		List<IBoard> models = getAllModels();
-		GameId highestId = null;
+		GameId highestId = new GameId(Integer.MIN_VALUE);
 
 		if (models.isEmpty()) {
 			return new GameId(STARTING_ID);
