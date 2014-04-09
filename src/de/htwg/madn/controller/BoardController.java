@@ -5,8 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.google.inject.Inject;
+
+import de.htwg.madn.model.Board;
+import de.htwg.madn.model.Default4PlayerSettings;
+import de.htwg.madn.model.GameId;
+import de.htwg.madn.model.IBoard;
 import de.htwg.madn.model.IGameSettings;
-import de.htwg.madn.model.IModelPort;
+import de.htwg.madn.model.IModelDao;
 import de.htwg.madn.model.Player;
 import de.htwg.madn.util.observer.Observable;
 
@@ -20,15 +26,18 @@ public final class BoardController extends Observable implements
 	// finished players
 	private Queue<Player> finishedPlayersQueue;
 	private boolean gameIsRunning;
-	private final IGameSettings settings;
+	private IGameSettings settings;
 	private MovementController movementController;
-	private final IModelPort model;
+	private IBoard model;
+	private final IModelDao modelDao;
 
-	public BoardController(IModelPort model) {
-		this.model = model;
-		this.settings = model.getSettings();
+	@Inject
+	public BoardController(IModelDao modelDao) {
+		this.modelDao = modelDao;
+		// TODO get injected instance;
+		model = new Board(new Default4PlayerSettings());
+		settings = model.getSettings();
 		init();
-		notifyObservers();
 	}
 
 	private void init() {
@@ -37,8 +46,9 @@ public final class BoardController extends Observable implements
 		this.activePlayer = null;
 		this.status = "New Game created.";
 		this.gameIsRunning = false;
-		this.movementController = new MovementController(model);
+		this.movementController = new MovementController(model, settings);
 		this.movementController.addObserver(this);
+		this.settings = model.getSettings();
 	}
 
 	@Override
@@ -52,7 +62,7 @@ public final class BoardController extends Observable implements
 	 * @see de.htwg.madn.controller.IBoardController#getBoard()
 	 */
 	@Override
-	public IModelPort getModelPort() {
+	public IBoard getModel() {
 		return model;
 	}
 
@@ -118,7 +128,7 @@ public final class BoardController extends Observable implements
 	public void reset() {
 		model.reset();
 		init();
-		status = "Reset: New Game created.";
+		status = "Game State reset.";
 		notifyObservers();
 	}
 
@@ -247,4 +257,50 @@ public final class BoardController extends Observable implements
 		return this.gameIsRunning;
 	}
 
+	@Override
+	public GameId saveGame(String comment) {
+		GameId savedGameId = modelDao.storeModel(model, comment);
+		status = "Game saved under id " + savedGameId;
+		return savedGameId;
+	}
+
+	@Override
+	public void loadGame(String gameIdString) {
+		try {
+			int id = Integer.parseInt(gameIdString);
+			loadGameFromId(id);
+		} catch (NumberFormatException e) {
+		}
+
+		notifyObservers();
+	}
+
+	private void loadGameFromId(int id) {
+		GameId gameId = new GameId(id);
+		model = modelDao.getModel(gameId);
+		if (model == null) {
+			newGame();
+		} else {
+			status = "Game with id " + model.getGameId().getId() + " loaded";
+		}
+	}
+
+	@Override
+	public void newGame() {
+		model = new Board(new Default4PlayerSettings());
+		// TODO get injected instance
+		init();
+		status = "New Game created";
+		notifyObservers();
+	}
+
+	@Override
+	public List<GameId> getSavedGameIds() {
+		List<IBoard> games = modelDao.getAllModels();
+		List<GameId> savedGameIds = new LinkedList<GameId>();
+		for (IBoard game : games) {
+			savedGameIds.add(game.getGameId());
+		}
+		return savedGameIds;
+	}
 }

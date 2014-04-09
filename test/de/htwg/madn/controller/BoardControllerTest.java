@@ -54,7 +54,7 @@ public class BoardControllerTest {
 
 	@Test
 	public void testGetModelPort() {
-		assertTrue(boardController.getModelPort() != null);
+		assertTrue(boardController.getModel() != null);
 	}
 
 	@Test

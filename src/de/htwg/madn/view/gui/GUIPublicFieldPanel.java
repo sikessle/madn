@@ -23,7 +23,7 @@ public final class GUIPublicFieldPanel extends JPanel implements ActionListener,
 	public GUIPublicFieldPanel(IBoardControllerPort contr) {
 		this.controller = contr;
 		controller.addObserver(this);
-		this.fields = new GUIField[controller.getModelPort().getPublicField().getSize()];
+		this.fields = new GUIField[controller.getModel().getPublicField().getSize()];
 		initGui();
 	}
 
@@ -45,7 +45,7 @@ public final class GUIPublicFieldPanel extends JPanel implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		GUIField field = (GUIField) e.getSource();
-		Figure fig = controller.getModelPort().getPublicField().getFigure(field.getId());
+		Figure fig = controller.getModel().getPublicField().getFigure(field.getId());
 		
 		if (fig != null) {
 			controller.moveFigure(fig.getLetter());
@@ -55,7 +55,7 @@ public final class GUIPublicFieldPanel extends JPanel implements ActionListener,
 	@Override
 	public void update() {
 		for (int i = 0; i < fields.length; i++) {
-			Figure fig = controller.getModelPort().getPublicField().getFigure(i);
+			Figure fig = controller.getModel().getPublicField().getFigure(i);
 			if (fig == null) {
 				fields[i].setText("");
 				fields[i].setForeground(emptyColor);

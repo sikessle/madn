@@ -1,10 +1,12 @@
 package de.htwg.madn.view.tui;
 
 import java.awt.Color;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import de.htwg.madn.controller.IBoardControllerPort;
+import de.htwg.madn.model.GameId;
 import de.htwg.madn.util.observer.IObserver;
 
 public final class TUIView implements IObserver {
@@ -60,12 +62,44 @@ public final class TUIView implements IObserver {
 			boardController.addPlayer(parm, Color.BLACK, true);
 		} else if (cmd.equals("r")) {
 			boardController.reset();
+		} else if (cmd.equals("l") && parm != null) {
+			boardController.loadGame(parm);
+		} else if (cmd.equals("n")) {
+			boardController.newGame();
+		} else if (cmd.equals("o")) {
+			List<GameId> savedGames = boardController.getSavedGameIds();
+			drawSavedGamesList(savedGames);
+			log.info(getCommandsString());
+		} else if (cmd.equals("p")) {
+			GameId id = boardController.saveGame(parm);
+			drawSaveSuccessful(id);
+			log.info(getCommandsString());
 		} else {
 			// error unknown parameter
 			log.info("Wrong Input!");
 		}
 
 		return false;
+	}
+
+	private void drawSavedGamesList(List<GameId> savedGames) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Available Games to load:\n");
+		for (GameId id : savedGames) {
+			sb.append(id);
+			sb.append(", ");
+		}
+		int commaIndex = sb.lastIndexOf(",");
+		if (commaIndex > -1) {
+			sb.deleteCharAt(commaIndex);
+		}
+		sb.append('\n');
+		log.info(sb);
+	}
+
+	private void drawSaveSuccessful(GameId id) {
+		String message = "Game saved under id: " + id;
+		log.info(message);
 	}
 
 	private void quitGame() {
@@ -109,9 +143,18 @@ public final class TUIView implements IObserver {
 	}
 
 	private void draw() {
-		log.info("\n" + getPlayerSettingString() + "\n" + getBoardString()
-				+ "\n" + "STATUS: " + boardController.getStatusString() + "\n"
+		log.info("\n" + getGameIdString() + "\n" + getPlayerSettingString()
+				+ "\n" + getBoardString() + "\n" + "STATUS: "
+				+ boardController.getStatusString() + "\n"
 				+ getCommandsString());
+	}
+
+	private String getGameIdString() {
+		GameId id = boardController.getModel().getGameId();
+		if (id != null) {
+			return "current game id: " + id.toString();
+		}
+		return "";
 	}
 
 	private String getPlayerSettingString() {
@@ -125,7 +168,9 @@ public final class TUIView implements IObserver {
 	private String getCommandsString() {
 		return "Commands: 'q' quit | 's' start game | "
 				+ "'add:PlayerName' add player\n"
-				+ "\t 'm:FigureLetter' move figure | 'd' roll dice | 'r' reset\n";
+				+ "\t 'm:FigureLetter' move figure | 'd' roll dice | 'r' reset |\n"
+				+ "\t 'n' create new game | 'l:game-number' load game | 'o' show saved games\n"
+				+ "\t 'p:comment' save game with comment\n";
 	}
 
 	public String getBoardString() {
@@ -134,13 +179,12 @@ public final class TUIView implements IObserver {
 		sb.append(stringifyer.getBorderString());
 		sb.append("\n");
 
-		sb.append(stringifyer.getHomeFieldsString(boardController
-				.getModelPort().getHomeFields()));
-		sb.append(stringifyer.getPublicFieldsString(boardController
-				.getModelPort().getPublicField(), boardController
-				.getModelPort()));
-		sb.append(stringifyer.getFinishFieldsString(boardController
-				.getModelPort().getFinishFields()));
+		sb.append(stringifyer.getHomeFieldsString(boardController.getModel()
+				.getHomeFields()));
+		sb.append(stringifyer.getPublicFieldsString(boardController.getModel()
+				.getPublicField(), boardController.getModel()));
+		sb.append(stringifyer.getFinishFieldsString(boardController.getModel()
+				.getFinishFields()));
 
 		sb.append(stringifyer.getBorderString());
 

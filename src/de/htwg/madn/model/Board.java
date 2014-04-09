@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.inject.Inject;
 
 public final class Board implements IBoard {
 	private List<HomeField> homeFields;
@@ -13,10 +14,13 @@ public final class Board implements IBoard {
 	private final int maxPlayers;
 	private final int figuresPerPlayer;
 	private final int publicFieldsCount;
-	private int diceMin;
-	private int diceMax;
+	private final int diceMin;
+	private final int diceMax;
 	private Dice dice;
+	private final IGameSettings settings;
+	private GameId gameId;
 
+	@Inject
 	public Board(IGameSettings gameSettings) {
 
 		this.maxPlayers = gameSettings.getMaxPlayers();
@@ -24,10 +28,12 @@ public final class Board implements IBoard {
 		this.publicFieldsCount = gameSettings.getPublicFieldsCount();
 		this.diceMin = gameSettings.getDiceMin();
 		this.diceMax = gameSettings.getDiceMax();
+		settings = gameSettings;
+		gameId = null;
 
 		init();
 	}
-	
+
 	private void init() {
 		this.dice = new Dice(diceMin, diceMax);
 		this.homeFields = new LinkedList<HomeField>();
@@ -38,16 +44,34 @@ public final class Board implements IBoard {
 		this.players = new LinkedList<Player>();
 		this.publicField = new PublicField(publicFieldsCount);
 	}
-	
+
+	@Override
+	public GameId getGameId() {
+		return gameId;
+	}
+
+	@Override
+	public void setGameId(GameId gameId) {
+		this.gameId = gameId;
+	}
+
+	@Override
+	public IGameSettings getSettings() {
+		return settings;
+	}
+
 	private void initHomeAndFinishFields() {
 		for (int i = 0; i < this.maxPlayers; i++) {
-			homeFields.add(new HomeField(getExitIndexHome(i), this.figuresPerPlayer));
+			homeFields.add(new HomeField(getExitIndexHome(i),
+					this.figuresPerPlayer));
 			finishFields.add(new FinishField(getEntryIndexFinish(i),
 					this.figuresPerPlayer));
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#reset()
 	 */
 	@Override
@@ -55,7 +79,9 @@ public final class Board implements IBoard {
 		init();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#getExitIndexHome(int)
 	 */
 	@Override
@@ -63,7 +89,9 @@ public final class Board implements IBoard {
 		return playerNumber * publicFieldsCount / maxPlayers;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#getEntryIndexFinish(int)
 	 */
 	@Override
@@ -72,11 +100,15 @@ public final class Board implements IBoard {
 				% publicFieldsCount;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.htwg.madn.model.IBoard#addPlayer(java.awt.Color, java.lang.String, boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.htwg.madn.model.IBoard#addPlayer(java.awt.Color,
+	 * java.lang.String, boolean)
 	 */
 	@Override
-	public Player addPlayer(final Color color, final String name, boolean isHuman) {
+	public Player addPlayer(final Color color, final String name,
+			boolean isHuman) {
 		if (players.size() >= maxPlayers) {
 			return null;
 		}
@@ -90,7 +122,9 @@ public final class Board implements IBoard {
 		return newPlayer;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#getHomeFields()
 	 */
 	@Override
@@ -98,7 +132,9 @@ public final class Board implements IBoard {
 		return homeFields;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#getFinishFields()
 	 */
 	@Override
@@ -106,7 +142,9 @@ public final class Board implements IBoard {
 		return finishFields;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#getPublicField()
 	 */
 	@Override
@@ -114,7 +152,9 @@ public final class Board implements IBoard {
 		return publicField;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#getPlayers()
 	 */
 	@Override
@@ -122,16 +162,22 @@ public final class Board implements IBoard {
 		return players;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IBoard#getDice()
 	 */
 	@Override
 	public Dice getDice() {
 		return this.dice;
 	}
-	
-	/* (non-Javadoc)
-	 * @see de.htwg.madn.model.IBoard#getFigureForPlayerByLetter(de.htwg.madn.model.Player, char)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.htwg.madn.model.IBoard#getFigureForPlayerByLetter(de.htwg.madn.model
+	 * .Player, char)
 	 */
 	@Override
 	public Figure getFigureForPlayerByLetter(Player player, char figureLetter) {

@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Queue;
 
+import de.htwg.madn.model.GameId;
+import de.htwg.madn.model.IBoard;
 import de.htwg.madn.model.IGameSettings;
-import de.htwg.madn.model.IModelPort;
 import de.htwg.madn.model.Player;
 import de.htwg.madn.util.observer.IObservable;
 import de.htwg.madn.util.observer.IObserver;
@@ -17,15 +18,20 @@ public interface IBoardControllerPort extends IObserver, IObservable {
 
 	/**
 	 * Returns the game settings
+	 * 
 	 * @return game settings
 	 */
 	IGameSettings getSettings();
 
 	/**
 	 * Adds a player to the board.
-	 * @param name Name of the player
-	 * @param col Color of the player
-	 * @param isHuman is it a human player?
+	 * 
+	 * @param name
+	 *            Name of the player
+	 * @param col
+	 *            Color of the player
+	 * @param isHuman
+	 *            is it a human player?
 	 */
 	void addPlayer(String name, Color col, boolean isHuman);
 
@@ -41,8 +47,10 @@ public interface IBoardControllerPort extends IObserver, IObservable {
 
 	/**
 	 * Move a figure.
-	 * @param figureLetter The letter by which the figure is identified
-	 * @return 
+	 * 
+	 * @param figureLetter
+	 *            The letter by which the figure is identified
+	 * @return
 	 */
 	void moveFigure(char figureLetter);
 
@@ -53,50 +61,79 @@ public interface IBoardControllerPort extends IObserver, IObservable {
 
 	/**
 	 * Returns the queue of finished players.
+	 * 
 	 * @return The queue of finished players.
 	 */
 	Queue<Player> getFinishedPlayersQueue();
 
 	/**
 	 * Returns the list of active players in the game.
+	 * 
 	 * @return list of active players in the game.
 	 */
 	List<Player> getPlayers();
 
 	/**
 	 * Returns the status string.
+	 * 
 	 * @return Status string
 	 */
 	String getStatusString();
 
 	/**
 	 * Returns the active player who's turn it is.
+	 * 
 	 * @return active player
 	 */
 	Player getActivePlayer();
 
 	/**
 	 * String representation of the active player.
+	 * 
 	 * @return String of the active player
 	 */
 	String getActivePlayerString();
 
 	/**
 	 * Returns the port to the model layer
+	 * 
 	 * @return Port to the model layer
 	 */
-	IModelPort getModelPort();
+	IBoard getModel();
 
 	/**
 	 * Checks if the game is finished.
+	 * 
 	 * @return true if game is finished, otherwise false
 	 */
 	boolean gameIsFinished();
 
 	/**
 	 * Checks if the game is running
+	 * 
 	 * @return true if game is running, otherwise false
 	 */
 	boolean gameIsRunning();
 
+	/**
+	 * Saves the current game.
+	 * 
+	 * @param comment
+	 *            optional comment. can be empty.
+	 * 
+	 * @return the id of the game
+	 */
+	GameId saveGame(String comment);
+
+	/**
+	 * Loads a new game with the given GameId.
+	 */
+	void loadGame(String gameId);
+
+	/**
+	 * Loads a new game (initially empty).
+	 */
+	void newGame();
+
+	List<GameId> getSavedGameIds();
 }

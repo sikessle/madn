@@ -4,8 +4,8 @@ import de.htwg.madn.model.Dice;
 import de.htwg.madn.model.Figure;
 import de.htwg.madn.model.FinishField;
 import de.htwg.madn.model.HomeField;
+import de.htwg.madn.model.IBoard;
 import de.htwg.madn.model.IGameSettings;
-import de.htwg.madn.model.IModelPort;
 import de.htwg.madn.model.Player;
 import de.htwg.madn.model.PublicField;
 import de.htwg.madn.util.observer.Observable;
@@ -16,12 +16,12 @@ final class MovementController extends Observable {
 	private final Dice dice;
 	private final IGameSettings settings;
 	private String status;
-	private final IModelPort model;
+	private final IBoard model;
 
-	public MovementController(IModelPort model) {
+	public MovementController(IBoard model, IGameSettings settings) {
 		this.model = model;
 		this.dice = model.getDice();
-		this.settings = model.getSettings();
+		this.settings = settings;
 		this.status = "";
 	}
 

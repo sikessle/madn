@@ -79,9 +79,9 @@ public abstract class GUISpecialFieldPanelAbstract extends JPanel implements
 		AbstractSpecialField specialField;
 
 		if (type == 'f') {
-			specialField = controller.getModelPort().getFinishFields().get(id);
+			specialField = controller.getModel().getFinishFields().get(id);
 		} else {
-			specialField = controller.getModelPort().getHomeFields().get(id);
+			specialField = controller.getModel().getHomeFields().get(id);
 		}
 		
 		return specialField;

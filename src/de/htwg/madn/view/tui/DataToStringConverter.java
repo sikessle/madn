@@ -6,8 +6,8 @@ import java.util.Queue;
 import de.htwg.madn.model.Figure;
 import de.htwg.madn.model.FinishField;
 import de.htwg.madn.model.HomeField;
+import de.htwg.madn.model.IBoard;
 import de.htwg.madn.model.IGameSettings;
-import de.htwg.madn.model.IModelPort;
 import de.htwg.madn.model.Player;
 import de.htwg.madn.model.PublicField;
 
@@ -113,8 +113,7 @@ public final class DataToStringConverter {
 		sb.append('|');
 	}
 
-	public String getPublicFieldsString(PublicField publicField,
-			IModelPort model) {
+	public String getPublicFieldsString(PublicField publicField, IBoard model) {
 		StringBuilder sb = new StringBuilder();
 		int publicFieldsCount = settings.getPublicFieldsCount();
 
@@ -130,7 +129,7 @@ public final class DataToStringConverter {
 	}
 
 	private void appendFigureLetterInPublicField(StringBuilder sb, int index,
-			Figure fig, IModelPort model) {
+			Figure fig, IBoard model) {
 		if (fig != null) {
 			sb.append(fig.getLetter());
 		} else if (isSpecialPublicFieldHomeExit(index, model)) {
@@ -142,7 +141,7 @@ public final class DataToStringConverter {
 		}
 	}
 
-	private boolean isSpecialPublicFieldHomeExit(int i, IModelPort model) {
+	private boolean isSpecialPublicFieldHomeExit(int i, IBoard model) {
 		for (HomeField homeField : model.getHomeFields()) {
 			if (homeField.getExitIndex() == i) {
 				return true;
@@ -152,7 +151,7 @@ public final class DataToStringConverter {
 		return false;
 	}
 
-	private boolean isSpecialPublicFieldFinishEntry(int i, IModelPort model) {
+	private boolean isSpecialPublicFieldFinishEntry(int i, IBoard model) {
 		for (FinishField finishField : model.getFinishFields()) {
 			if (finishField.getEntryIndex() == i) {
 				return true;

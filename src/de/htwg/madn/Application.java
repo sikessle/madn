@@ -7,28 +7,13 @@ import org.apache.log4j.PropertyConfigurator;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import de.htwg.madn.controller.BoardController;
+import de.htwg.madn.controller.ControllerModule;
 import de.htwg.madn.controller.IBoardControllerPort;
-import de.htwg.madn.model.Board;
-import de.htwg.madn.model.Db4oModelModule;
-import de.htwg.madn.model.GameSettings;
-import de.htwg.madn.model.IGameSettings;
-import de.htwg.madn.model.IModelPort;
-import de.htwg.madn.model.ModelPort;
-import de.htwg.madn.view.gui.GUIView;
+import de.htwg.madn.model.db4o.Db4oModelModule;
 import de.htwg.madn.view.tui.TUIView;
 
 public final class Application {
 
-	private static final int MINPLAYERS = 1;
-	private static final int MAXPLAYERS = 4;
-	private static final int FIGURESPERPLAYER = 4;
-	private static final int PUBLICFIELDSCOUNT = 40;
-	private static final int DICEMIN = 1;
-	private static final int DICEMAX = 6;
-	private static final int MINNUMBERTOEXITHOME = 6;
-	private static final int THROWSALLOWEDINHOME = 3;
-	private static final int THROWSALLOWEDINPUBLIC = 1;
 	private static final Scanner SCANNER = new Scanner(System.in);
 
 	private Application() {
@@ -36,26 +21,30 @@ public final class Application {
 	}
 
 	public static void main(String[] args) {
-
-		Injector injector = Guice.createInjector(new Db4oModelModule());
-
 		PropertyConfigurator.configure("log4j.properties");
+		IBoardControllerPort boardController = getBoardController();
+		startViews(boardController);
+	}
 
-		IGameSettings settings = new GameSettings(MINPLAYERS, MAXPLAYERS,
-				FIGURESPERPLAYER, PUBLICFIELDSCOUNT, DICEMIN, DICEMAX,
-				MINNUMBERTOEXITHOME, THROWSALLOWEDINHOME, THROWSALLOWEDINPUBLIC);
+	private static IBoardControllerPort getBoardController() {
+		Injector injector = getConfiguredGuiceInjector();
+		return injector.getInstance(IBoardControllerPort.class);
+	}
 
-		IModelPort model = new ModelPort(settings, new Board(settings));
+	private static Injector getConfiguredGuiceInjector() {
+		return Guice.createInjector(new Db4oModelModule(),
+				new ControllerModule());
+	}
 
-		IBoardControllerPort boardController = new BoardController(model);
-
-		new GUIView(boardController);
-
+	private static void startViews(IBoardControllerPort boardController) {
+		// new GUIView(boardController);
 		TUIView tui = new TUIView(boardController);
+
 		// active waiting => infinite loop
 		boolean quit = false;
 		while (!quit) {
 			quit = tui.handleInput(SCANNER.nextLine());
 		}
 	}
+
 }
