@@ -35,14 +35,13 @@ public final class Board implements IBoard {
 	}
 
 	private void init() {
-		this.dice = new Dice(diceMin, diceMax);
-		this.homeFields = new LinkedList<HomeField>();
-		this.finishFields = new LinkedList<FinishField>();
-
+		gameId = null;
+		dice = new Dice(diceMin, diceMax);
+		homeFields = new LinkedList<HomeField>();
+		finishFields = new LinkedList<FinishField>();
 		initHomeAndFinishFields();
-
-		this.players = new LinkedList<Player>();
-		this.publicField = new PublicField(publicFieldsCount);
+		players = new LinkedList<Player>();
+		publicField = new PublicField(publicFieldsCount);
 	}
 
 	@Override

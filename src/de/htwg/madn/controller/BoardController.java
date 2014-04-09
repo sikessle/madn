@@ -7,8 +7,6 @@ import java.util.Queue;
 
 import com.google.inject.Inject;
 
-import de.htwg.madn.model.Board;
-import de.htwg.madn.model.Default4PlayerSettings;
 import de.htwg.madn.model.GameId;
 import de.htwg.madn.model.IBoard;
 import de.htwg.madn.model.IGameSettings;
@@ -26,17 +24,14 @@ public final class BoardController extends Observable implements
 	// finished players
 	private Queue<Player> finishedPlayersQueue;
 	private boolean gameIsRunning;
-	private IGameSettings settings;
 	private MovementController movementController;
 	private IBoard model;
 	private final IModelDao modelDao;
 
 	@Inject
-	public BoardController(IModelDao modelDao) {
+	public BoardController(IModelDao modelDao, IBoard model) {
 		this.modelDao = modelDao;
-		// TODO get injected instance;
-		model = new Board(new Default4PlayerSettings());
-		settings = model.getSettings();
+		this.model = model;
 		init();
 	}
 
@@ -46,9 +41,8 @@ public final class BoardController extends Observable implements
 		this.activePlayer = null;
 		this.status = "New Game created.";
 		this.gameIsRunning = false;
-		this.movementController = new MovementController(model, settings);
+		this.movementController = new MovementController(model);
 		this.movementController.addObserver(this);
-		this.settings = model.getSettings();
 	}
 
 	@Override
@@ -73,7 +67,7 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public IGameSettings getSettings() {
-		return settings;
+		return model.getSettings();
 	}
 
 	/*
@@ -88,7 +82,7 @@ public final class BoardController extends Observable implements
 
 		if (newPlayer == null) {
 			status = "Maximum amount of players reached: "
-					+ settings.getMaxPlayers();
+					+ model.getSettings().getMaxPlayers();
 		} else {
 			activePlayersQueue.add(newPlayer);
 			status = "Player " + newPlayer.getId() + " \""
@@ -165,11 +159,12 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public void startGame() {
-
 		if (gameIsRunning) {
 			status = "Spiel laeuft schon!";
-		} else if (activePlayersQueue.size() < settings.getMinPlayers()) {
-			status = "Too few players. At least " + settings.getMinPlayers()
+		} else if (activePlayersQueue.size() < model.getSettings()
+				.getMinPlayers()) {
+			status = "Too few players. At least "
+					+ model.getSettings().getMinPlayers()
 					+ " players required.";
 		} else {
 			setNextActivePlayer();
@@ -277,21 +272,13 @@ public final class BoardController extends Observable implements
 
 	private void loadGameFromId(int id) {
 		GameId gameId = new GameId(id);
-		model = modelDao.getModel(gameId);
+		IBoard loadedModel = modelDao.getModel(gameId);
 		if (model == null) {
-			newGame();
+			reset();
 		} else {
+			model = loadedModel;
 			status = "Game with id " + model.getGameId().getId() + " loaded";
 		}
-	}
-
-	@Override
-	public void newGame() {
-		model = new Board(new Default4PlayerSettings());
-		// TODO get injected instance
-		init();
-		status = "New Game created";
-		notifyObservers();
 	}
 
 	@Override

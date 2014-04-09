@@ -18,10 +18,10 @@ final class MovementController extends Observable {
 	private String status;
 	private final IBoard model;
 
-	public MovementController(IBoard model, IGameSettings settings) {
+	public MovementController(IBoard model) {
 		this.model = model;
 		this.dice = model.getDice();
-		this.settings = settings;
+		this.settings = model.getSettings();
 		this.status = "";
 	}
 

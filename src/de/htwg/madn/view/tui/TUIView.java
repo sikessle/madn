@@ -64,8 +64,6 @@ public final class TUIView implements IObserver {
 			boardController.reset();
 		} else if (cmd.equals("l") && parm != null) {
 			boardController.loadGame(parm);
-		} else if (cmd.equals("n")) {
-			boardController.newGame();
 		} else if (cmd.equals("o")) {
 			List<GameId> savedGames = boardController.getSavedGameIds();
 			drawSavedGamesList(savedGames);
@@ -168,8 +166,8 @@ public final class TUIView implements IObserver {
 	private String getCommandsString() {
 		return "Commands: 'q' quit | 's' start game | "
 				+ "'add:PlayerName' add player\n"
-				+ "\t 'm:FigureLetter' move figure | 'd' roll dice | 'r' reset |\n"
-				+ "\t 'n' create new game | 'l:game-number' load game | 'o' show saved games\n"
+				+ "\t 'm:FigureLetter' move figure | 'd' roll dice | 'r' reset/new game |\n"
+				+ "\t 'l:game-number' load game | 'o' show saved games\n"
 				+ "\t 'p:comment' save game with comment\n";
 	}
 

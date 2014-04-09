@@ -130,10 +130,5 @@ public interface IBoardControllerPort extends IObserver, IObservable {
 	 */
 	void loadGame(String gameId);
 
-	/**
-	 * Loads a new game (initially empty).
-	 */
-	void newGame();
-
 	List<GameId> getSavedGameIds();
 }
