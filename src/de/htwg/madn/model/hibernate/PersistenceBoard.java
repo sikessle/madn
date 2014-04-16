@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,10 +21,15 @@ public final class PersistenceBoard implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int dbId;
 
+	@OneToMany(mappedBy = "madn3_homefield")
 	private List<PersistenceHomeField> homeFields;
+	@OneToMany(mappedBy = "madn3_finishfield")
 	private List<PersistenceFinishField> finishFields;
+	@OneToMany(mappedBy = "madn3_player")
 	private List<PersistencePlayer> players;
+	@OneToMany(mappedBy = "madn3_player")
 	private Queue<PersistencePlayer> activePlayersQueue;
+	@OneToMany(mappedBy = "madn3_player")
 	private Queue<PersistencePlayer> finishedPlayersQueue;
 	private PersistencePlayer activePlayer;
 	private boolean gameIsRunning;
