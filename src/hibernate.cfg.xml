@@ -12,7 +12,15 @@
       <property name="current_session_context_class">thread</property>
       <property name="hibernate.hbm2ddl.auto">update</property>
       <property name="show_sql">false</property>
-      <mapping class="de.htwg.sudoku.persistence.hibernate.PersistentCell" />
-      <mapping class="de.htwg.sudoku.persistence.hibernate.PersistentGrid" />
+      <mapping class="de.htwg.madn.model.hibernate.PersistenceBoard" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistenceDice" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistenceFigure" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistenceFinishField" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistenceGameId" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistenceGameSettings" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistenceHomeField" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistencePlayer" />
+	  <mapping class="de.htwg.madn.model.hibernate.PersistencePublicField" />
+      
    </session-factory>
 </hibernate-configuration>
