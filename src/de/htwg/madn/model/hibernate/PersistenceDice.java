@@ -12,6 +12,14 @@ import javax.persistence.Table;
 @Table(name = "madn3_dice")
 public final class PersistenceDice implements Serializable {
 
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	private static final long serialVersionUID = 1345046540927622731L;
 
 	@Id

@@ -32,6 +32,14 @@ public final class PersistencePlayer implements Serializable {
 		return id;
 	}
 
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}

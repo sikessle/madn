@@ -43,6 +43,14 @@ public final class PersistenceBoard implements Serializable {
 		return homeFields;
 	}
 
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	public void setHomeFields(List<PersistenceHomeField> homeFields) {
 		this.homeFields = homeFields;
 	}

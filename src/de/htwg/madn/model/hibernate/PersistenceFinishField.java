@@ -26,6 +26,14 @@ public class PersistenceFinishField implements Serializable {
 		return owner;
 	}
 
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	public void setOwner(PersistencePlayer owner) {
 		this.owner = owner;
 	}

@@ -18,6 +18,14 @@ public final class PersistencePublicField implements Serializable {
 	private int dbId;
 	private PersistenceFigure[] fields;
 
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	public PersistenceFigure[] getFields() {
 		return fields;
 	}

@@ -29,6 +29,14 @@ public final class PersistenceFigure implements Serializable {
 		return letter;
 	}
 
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	public void setLetter(char letter) {
 		this.letter = letter;
 	}

@@ -8,12 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import de.htwg.madn.model.IGameSettings;
-
 @Entity
 @Table(name = "madn3_gamesettings")
-public final class PersistenceGameSettings implements IGameSettings,
-		Serializable {
+public final class PersistenceGameSettings implements Serializable {
 
 	private static final long serialVersionUID = 4007513131073987575L;
 
@@ -31,16 +28,22 @@ public final class PersistenceGameSettings implements IGameSettings,
 	private int throwsAllowedInHome;
 	private int throwsAllowedInPublic;
 
-	@Override
 	public int getMinPlayers() {
 		return minPlayers;
+	}
+
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
 	}
 
 	public void setMinPlayers(int minPlayers) {
 		this.minPlayers = minPlayers;
 	}
 
-	@Override
 	public int getMaxPlayers() {
 		return maxPlayers;
 	}
@@ -49,7 +52,6 @@ public final class PersistenceGameSettings implements IGameSettings,
 		this.maxPlayers = maxPlayers;
 	}
 
-	@Override
 	public int getFiguresPerPlayer() {
 		return figuresPerPlayer;
 	}
@@ -58,7 +60,6 @@ public final class PersistenceGameSettings implements IGameSettings,
 		this.figuresPerPlayer = figuresPerPlayer;
 	}
 
-	@Override
 	public int getPublicFieldsCount() {
 		return publicFieldsCount;
 	}
@@ -67,7 +68,6 @@ public final class PersistenceGameSettings implements IGameSettings,
 		this.publicFieldsCount = publicFieldsCount;
 	}
 
-	@Override
 	public int getDiceMin() {
 		return diceMin;
 	}
@@ -76,7 +76,6 @@ public final class PersistenceGameSettings implements IGameSettings,
 		this.diceMin = diceMin;
 	}
 
-	@Override
 	public int getDiceMax() {
 		return diceMax;
 	}
@@ -85,7 +84,6 @@ public final class PersistenceGameSettings implements IGameSettings,
 		this.diceMax = diceMax;
 	}
 
-	@Override
 	public int getMinNumberToExitHome() {
 		return minNumberToExitHome;
 	}
@@ -94,7 +92,6 @@ public final class PersistenceGameSettings implements IGameSettings,
 		this.minNumberToExitHome = minNumberToExitHome;
 	}
 
-	@Override
 	public int getThrowsAllowedInHome() {
 		return throwsAllowedInHome;
 	}
@@ -103,7 +100,6 @@ public final class PersistenceGameSettings implements IGameSettings,
 		this.throwsAllowedInHome = throwsAllowedInHome;
 	}
 
-	@Override
 	public int getThrowsAllowedInPublic() {
 		return throwsAllowedInPublic;
 	}
