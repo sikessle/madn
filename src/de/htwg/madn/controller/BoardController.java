@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Queue;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 import de.htwg.madn.model.GameId;
 import de.htwg.madn.model.IBoard;
@@ -28,13 +27,11 @@ public final class BoardController extends Observable implements
 	private MovementController movementController;
 	private IBoard model;
 	private final IModelDao modelDao;
-	private final Injector injector;
 
 	@Inject
-	public BoardController(IModelDao modelDao, Injector injector) {
+	public BoardController(IModelDao modelDao) {
 		this.modelDao = modelDao;
-		this.model = injector.getInstance(IBoard.class);
-		this.injector = injector;
+		this.model = modelDao.createModel();
 		init();
 	}
 
@@ -123,7 +120,7 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public void reset() {
-		model = injector.getInstance(IBoard.class);
+		model = modelDao.createModel();
 		init();
 		status = "Game State reset.";
 		notifyObservers();

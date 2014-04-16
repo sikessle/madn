@@ -9,7 +9,7 @@ import com.google.inject.Injector;
 
 import de.htwg.madn.controller.ControllerModule;
 import de.htwg.madn.controller.IBoardControllerPort;
-import de.htwg.madn.model.db4o.Db4oModelModule;
+import de.htwg.madn.model.hibernate.HibernateModelModule;
 import de.htwg.madn.view.tui.TUIView;
 
 public final class Application {
@@ -32,7 +32,7 @@ public final class Application {
 	}
 
 	private static Injector getConfiguredGuiceInjector() {
-		return Guice.createInjector(new Db4oModelModule(),
+		return Guice.createInjector(new HibernateModelModule(),
 				new ControllerModule());
 	}
 

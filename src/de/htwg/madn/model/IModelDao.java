@@ -11,4 +11,6 @@ public interface IModelDao {
 	GameId storeModel(IBoard model, String comment);
 
 	List<IBoard> getAllModels();
+
+	IBoard createModel();
 }

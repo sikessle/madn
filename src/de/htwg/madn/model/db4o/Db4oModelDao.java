@@ -7,6 +7,7 @@ import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.name.Named;
 
 import de.htwg.madn.model.GameId;
@@ -18,6 +19,8 @@ public class Db4oModelDao implements IModelDao {
 
 	private static final int STARTING_ID = 1;
 	private final EmbeddedObjectContainer db;
+	@Inject
+	private Injector injector;
 
 	@Inject
 	public Db4oModelDao(@Named("db4oPath") String dbPath) {
@@ -86,6 +89,11 @@ public class Db4oModelDao implements IModelDao {
 	@Override
 	public List<IBoard> getAllModels() {
 		return db.query(IBoard.class);
+	}
+
+	@Override
+	public IBoard createModel() {
+		return injector.getInstance(IBoard.class);
 	}
 
 }
