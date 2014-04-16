@@ -67,6 +67,8 @@ public class Db4oModelDao implements IModelDao {
 			GameId id = getNextFreeGameId();
 			id.setComment(comment);
 			model.setGameId(id);
+		} else {
+			model.getGameId().setComment(comment);
 		}
 	}
 
