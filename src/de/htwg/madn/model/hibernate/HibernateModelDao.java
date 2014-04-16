@@ -2,6 +2,10 @@ package de.htwg.madn.model.hibernate;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Transaction;
+import org.hibernate.classic.Session;
+
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -11,13 +15,34 @@ import de.htwg.madn.model.IModelDao;
 
 public class HibernateModelDao implements IModelDao {
 
+	private final Injector injector;
+	private final DomainObjectToPersistenceTransformer domainToPersistence;
+	private final PersistenceToDomainObjectTransformer persistenceToDomain;
+
 	@Inject
-	private Injector injector;
+	public HibernateModelDao(Injector injector) {
+		this.injector = injector;
+		domainToPersistence = new DomainObjectToPersistenceTransformer();
+		persistenceToDomain = new PersistenceToDomainObjectTransformer(injector);
+	}
 
 	@Override
 	public IBoard getModel(GameId gameId) {
-		// TODO Auto-generated method stub
-		return null;
+		IBoard board = null;
+		PersistenceBoard persistenceBoard = null;
+
+		executeInTransactionContext(new HibernateTransactionCommand() {
+			@Override
+			public void execute() {
+
+			}
+		});
+
+		if (persistenceBoard != null) {
+			board = persistenceToDomain.transform(persistenceBoard);
+		}
+
+		return board;
 	}
 
 	@Override
@@ -28,14 +53,40 @@ public class HibernateModelDao implements IModelDao {
 
 	@Override
 	public GameId storeModel(IBoard model, String comment) {
-		// TODO Auto-generated method stub
+		PersistenceBoard persistenceBoard = domainToPersistence
+				.transform(model);
+
+		executeInTransactionContext(new HibernateTransactionCommand() {
+			@Override
+			public void execute() {
+
+			}
+		});
 		return null;
 	}
 
 	@Override
-	public List<IBoard> getAllModels() {
+	public List<GameId> getAllGameIds() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private void executeInTransactionContext(HibernateTransactionCommand cmd) {
+		Transaction tx = null;
+		try {
+			Session session = HibernateUtil.getInstance().getCurrentSession();
+			tx = session.beginTransaction();
+			cmd.execute();
+			tx.commit();
+		} catch (HibernateException ex) {
+			if (tx != null) {
+				try {
+					tx.rollback();
+				} catch (HibernateException exRb) {
+					throw new RuntimeException(ex.getMessage());
+				}
+			}
+		}
 	}
 
 	@Override

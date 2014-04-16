@@ -10,7 +10,7 @@ public interface IModelDao {
 
 	GameId storeModel(IBoard model, String comment);
 
-	List<IBoard> getAllModels();
+	List<GameId> getAllGameIds();
 
 	IBoard createModel();
 }

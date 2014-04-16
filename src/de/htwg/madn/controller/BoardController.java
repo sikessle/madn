@@ -1,7 +1,6 @@
 package de.htwg.madn.controller;
 
 import java.awt.Color;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -275,11 +274,6 @@ public final class BoardController extends Observable implements
 
 	@Override
 	public List<GameId> getSavedGameIds() {
-		List<IBoard> games = modelDao.getAllModels();
-		List<GameId> savedGameIds = new LinkedList<GameId>();
-		for (IBoard game : games) {
-			savedGameIds.add(game.getGameId());
-		}
-		return savedGameIds;
+		return modelDao.getAllGameIds();
 	}
 }

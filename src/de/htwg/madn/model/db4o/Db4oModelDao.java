@@ -1,5 +1,6 @@
 package de.htwg.madn.model.db4o;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.db4o.Db4oEmbedded;
@@ -70,16 +71,16 @@ public class Db4oModelDao implements IModelDao {
 	}
 
 	private GameId getNextFreeGameId() {
-		List<IBoard> models = getAllModels();
+		List<GameId> gameIds = getAllGameIds();
 		GameId highestId = new GameId(Integer.MIN_VALUE);
 
-		if (models.isEmpty()) {
+		if (gameIds.isEmpty()) {
 			return new GameId(STARTING_ID);
 		}
 
-		for (IBoard model : models) {
-			if (model.getGameId().compareTo(highestId) > 0) {
-				highestId = model.getGameId();
+		for (GameId id : gameIds) {
+			if (id.compareTo(highestId) > 0) {
+				highestId = id;
 			}
 		}
 
@@ -87,8 +88,15 @@ public class Db4oModelDao implements IModelDao {
 	}
 
 	@Override
-	public List<IBoard> getAllModels() {
-		return db.query(IBoard.class);
+	public List<GameId> getAllGameIds() {
+		List<GameId> gameIds = new LinkedList<GameId>();
+		List<IBoard> boards = db.query(IBoard.class);
+
+		for (IBoard board : boards) {
+			gameIds.add(board.getGameId());
+		}
+
+		return gameIds;
 	}
 
 	@Override
