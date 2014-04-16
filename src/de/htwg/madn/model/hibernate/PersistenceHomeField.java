@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "madn3_homefield")
 public final class PersistenceHomeField implements Serializable {
 
 	private static final long serialVersionUID = 7359796367214147054L;

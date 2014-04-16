@@ -2,10 +2,14 @@ package de.htwg.madn.model.hibernate;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "madn3_publicfield")
 public final class PersistencePublicField implements Serializable {
 
 	private static final long serialVersionUID = 6022183798764317693L;

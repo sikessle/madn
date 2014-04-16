@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "madn3_gameid")
 public class PersistenceGameId implements Serializable {
 
 	private static final long serialVersionUID = 9158941452194488213L;

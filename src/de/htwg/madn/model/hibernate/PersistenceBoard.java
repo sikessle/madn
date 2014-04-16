@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "madn3_board")
 public final class PersistenceBoard implements Serializable {
 
 	private static final long serialVersionUID = -5770225591504645761L;
