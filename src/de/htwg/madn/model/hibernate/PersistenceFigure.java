@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import de.htwg.madn.model.Player;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "madn3_figure")
 public final class PersistenceFigure implements Serializable {
 
 	private static final long serialVersionUID = 6788871770979260748L;
@@ -19,7 +19,7 @@ public final class PersistenceFigure implements Serializable {
 	private int dbId;
 
 	private char letter;
-	private Player owner;
+	private PersistencePlayer owner;
 	private boolean atHomeArea = true;
 	private boolean atFinishArea = false;
 	private boolean finished = false;
@@ -29,15 +29,23 @@ public final class PersistenceFigure implements Serializable {
 		return letter;
 	}
 
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	public void setLetter(char letter) {
 		this.letter = letter;
 	}
 
-	public Player getOwner() {
+	public PersistencePlayer getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Player owner) {
+	public void setOwner(PersistencePlayer owner) {
 		this.owner = owner;
 	}
 

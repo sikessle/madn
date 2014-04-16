@@ -8,16 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import de.htwg.madn.model.Dice;
-import de.htwg.madn.model.FinishField;
-import de.htwg.madn.model.GameId;
-import de.htwg.madn.model.HomeField;
-import de.htwg.madn.model.IGameSettings;
-import de.htwg.madn.model.Player;
-import de.htwg.madn.model.PublicField;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "madn3_board")
 public final class PersistenceBoard implements Serializable {
 
 	private static final long serialVersionUID = -5770225591504645761L;
@@ -26,70 +20,80 @@ public final class PersistenceBoard implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int dbId;
 
-	private List<HomeField> homeFields;
-	private List<FinishField> finishFields;
-	private List<Player> players;
-	private Queue<Player> activePlayersQueue;
-	private Queue<Player> finishedPlayersQueue;
-	private Player activePlayer;
+	private List<PersistenceHomeField> homeFields;
+	private List<PersistenceFinishField> finishFields;
+	private List<PersistencePlayer> players;
+	private Queue<PersistencePlayer> activePlayersQueue;
+	private Queue<PersistencePlayer> finishedPlayersQueue;
+	private PersistencePlayer activePlayer;
 	private boolean gameIsRunning;
 	private String status = "";
 
-	private PublicField publicField;
+	private PersistencePublicField publicField;
 	private int maxPlayers;
 	private int figuresPerPlayer;
 	private int publicFieldsCount;
 	private int diceMin;
 	private int diceMax;
-	private Dice dice;
-	private IGameSettings settings;
-	private GameId gameId;
+	private PersistenceDice dice;
+	private PersistenceGameSettings settings;
+	private PersistenceGameId gameId;
 
-	public List<HomeField> getHomeFields() {
+	public List<PersistenceHomeField> getHomeFields() {
 		return homeFields;
 	}
 
-	public void setHomeFields(List<HomeField> homeFields) {
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
+	public void setHomeFields(List<PersistenceHomeField> homeFields) {
 		this.homeFields = homeFields;
 	}
 
-	public List<FinishField> getFinishFields() {
+	public List<PersistenceFinishField> getFinishFields() {
 		return finishFields;
 	}
 
-	public void setFinishFields(List<FinishField> finishFields) {
+	public void setFinishFields(List<PersistenceFinishField> finishFields) {
 		this.finishFields = finishFields;
 	}
 
-	public List<Player> getPlayers() {
+	public List<PersistencePlayer> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(List<Player> players) {
+	public void setPlayers(List<PersistencePlayer> players) {
 		this.players = players;
 	}
 
-	public Queue<Player> getActivePlayersQueue() {
+	public Queue<PersistencePlayer> getActivePlayersQueue() {
 		return activePlayersQueue;
 	}
 
-	public void setActivePlayersQueue(Queue<Player> activePlayersQueue) {
+	public void setActivePlayersQueue(
+			Queue<PersistencePlayer> activePlayersQueue) {
 		this.activePlayersQueue = activePlayersQueue;
 	}
 
-	public Queue<Player> getFinishedPlayersQueue() {
+	public Queue<PersistencePlayer> getFinishedPlayersQueue() {
 		return finishedPlayersQueue;
 	}
 
-	public void setFinishedPlayersQueue(Queue<Player> finishedPlayersQueue) {
+	public void setFinishedPlayersQueue(
+			Queue<PersistencePlayer> finishedPlayersQueue) {
 		this.finishedPlayersQueue = finishedPlayersQueue;
 	}
 
-	public Player getActivePlayer() {
+	public PersistencePlayer getActivePlayer() {
 		return activePlayer;
 	}
 
-	public void setActivePlayer(Player activePlayer) {
+	public void setActivePlayer(PersistencePlayer activePlayer) {
 		this.activePlayer = activePlayer;
 	}
 
@@ -109,11 +113,11 @@ public final class PersistenceBoard implements Serializable {
 		this.status = status;
 	}
 
-	public PublicField getPublicField() {
+	public PersistencePublicField getPublicField() {
 		return publicField;
 	}
 
-	public void setPublicField(PublicField publicField) {
+	public void setPublicField(PersistencePublicField publicField) {
 		this.publicField = publicField;
 	}
 
@@ -157,27 +161,27 @@ public final class PersistenceBoard implements Serializable {
 		this.diceMax = diceMax;
 	}
 
-	public Dice getDice() {
+	public PersistenceDice getDice() {
 		return dice;
 	}
 
-	public void setDice(Dice dice) {
+	public void setDice(PersistenceDice dice) {
 		this.dice = dice;
 	}
 
-	public IGameSettings getSettings() {
+	public PersistenceGameSettings getSettings() {
 		return settings;
 	}
 
-	public void setSettings(IGameSettings settings) {
+	public void setSettings(PersistenceGameSettings settings) {
 		this.settings = settings;
 	}
 
-	public GameId getGameId() {
+	public PersistenceGameId getGameId() {
 		return gameId;
 	}
 
-	public void setGameId(GameId gameId) {
+	public void setGameId(PersistenceGameId gameId) {
 		this.gameId = gameId;
 	}
 

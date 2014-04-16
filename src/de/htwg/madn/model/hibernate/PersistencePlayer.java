@@ -8,12 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import de.htwg.madn.model.Figure;
-import de.htwg.madn.model.FinishField;
-import de.htwg.madn.model.HomeField;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "madn3_player")
 public final class PersistencePlayer implements Serializable {
 
 	private static final long serialVersionUID = -734474890707608653L;
@@ -25,13 +23,21 @@ public final class PersistencePlayer implements Serializable {
 	private int id;
 	private Color color;
 	private String name;
-	private List<Figure> figures;
-	private FinishField finishField;
-	private HomeField homeField;
+	private List<PersistenceFigure> figures;
+	private PersistenceFinishField finishField;
+	private PersistenceHomeField homeField;
 	private boolean isHuman;
 
 	public int getId() {
 		return id;
+	}
+
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
 	}
 
 	public void setId(int id) {
@@ -54,27 +60,27 @@ public final class PersistencePlayer implements Serializable {
 		this.name = name;
 	}
 
-	public List<Figure> getFigures() {
+	public List<PersistenceFigure> getFigures() {
 		return figures;
 	}
 
-	public void setFigures(List<Figure> figures) {
+	public void setFigures(List<PersistenceFigure> figures) {
 		this.figures = figures;
 	}
 
-	public FinishField getFinishField() {
+	public PersistenceFinishField getFinishField() {
 		return finishField;
 	}
 
-	public void setFinishField(FinishField finishField) {
+	public void setFinishField(PersistenceFinishField finishField) {
 		this.finishField = finishField;
 	}
 
-	public HomeField getHomeField() {
+	public PersistenceHomeField getHomeField() {
 		return homeField;
 	}
 
-	public void setHomeField(HomeField homeField) {
+	public void setHomeField(PersistenceHomeField homeField) {
 		this.homeField = homeField;
 	}
 

@@ -6,11 +6,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import de.htwg.madn.model.Player;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "madn3_dice")
 public final class PersistenceDice implements Serializable {
+
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
 
 	private static final long serialVersionUID = 1345046540927622731L;
 
@@ -22,7 +30,7 @@ public final class PersistenceDice implements Serializable {
 	private int max;
 	private int throwsCount;
 	private int lastNumber;
-	private Player lastThrower;
+	private PersistencePlayer lastThrower;
 
 	public int getMin() {
 		return min;
@@ -56,11 +64,11 @@ public final class PersistenceDice implements Serializable {
 		this.lastNumber = lastNumber;
 	}
 
-	public Player getLastThrower() {
+	public PersistencePlayer getLastThrower() {
 		return lastThrower;
 	}
 
-	public void setLastThrower(Player lastThrower) {
+	public void setLastThrower(PersistencePlayer lastThrower) {
 		this.lastThrower = lastThrower;
 	}
 
