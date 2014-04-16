@@ -7,9 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import de.htwg.madn.model.Figure;
-import de.htwg.madn.model.Player;
-
 @Entity
 public class PersistenceFinishField implements Serializable {
 
@@ -19,23 +16,23 @@ public class PersistenceFinishField implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int dbId;
 
-	private Player owner;
-	private Figure[] fields;
+	private PersistencePlayer owner;
+	private PersistenceFigure[] fields;
 	private int entryIndex;
 
-	public Player getOwner() {
+	public PersistencePlayer getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Player owner) {
+	public void setOwner(PersistencePlayer owner) {
 		this.owner = owner;
 	}
 
-	public Figure[] getFields() {
+	public PersistenceFigure[] getFields() {
 		return fields;
 	}
 
-	public void setFields(Figure[] fields) {
+	public void setFields(PersistenceFigure[] fields) {
 		this.fields = fields;
 	}
 

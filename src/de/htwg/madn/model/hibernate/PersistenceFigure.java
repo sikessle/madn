@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import de.htwg.madn.model.Player;
-
 @Entity
 public final class PersistenceFigure implements Serializable {
 
@@ -19,7 +17,7 @@ public final class PersistenceFigure implements Serializable {
 	private int dbId;
 
 	private char letter;
-	private Player owner;
+	private PersistencePlayer owner;
 	private boolean atHomeArea = true;
 	private boolean atFinishArea = false;
 	private boolean finished = false;
@@ -33,11 +31,11 @@ public final class PersistenceFigure implements Serializable {
 		this.letter = letter;
 	}
 
-	public Player getOwner() {
+	public PersistencePlayer getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Player owner) {
+	public void setOwner(PersistencePlayer owner) {
 		this.owner = owner;
 	}
 
