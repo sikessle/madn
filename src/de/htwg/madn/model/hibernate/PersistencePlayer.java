@@ -2,7 +2,6 @@ package de.htwg.madn.model.hibernate;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
