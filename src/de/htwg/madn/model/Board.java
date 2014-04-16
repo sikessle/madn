@@ -3,6 +3,7 @@ package de.htwg.madn.model;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import com.google.inject.Inject;
 
@@ -10,6 +11,14 @@ public final class Board implements IBoard {
 	private List<HomeField> homeFields;
 	private List<FinishField> finishFields;
 	private List<Player> players;
+	// without finished players
+	private Queue<Player> activePlayersQueue;
+	// finished players
+	private Queue<Player> finishedPlayersQueue;
+	private Player activePlayer;
+	private boolean gameIsRunning;
+	private String status = "";
+
 	private PublicField publicField;
 	private final int maxPlayers;
 	private final int figuresPerPlayer;
@@ -39,9 +48,44 @@ public final class Board implements IBoard {
 		dice = new Dice(diceMin, diceMax);
 		homeFields = new LinkedList<HomeField>();
 		finishFields = new LinkedList<FinishField>();
+		activePlayersQueue = new LinkedList<Player>();
+		finishedPlayersQueue = new LinkedList<Player>();
 		initHomeAndFinishFields();
 		players = new LinkedList<Player>();
 		publicField = new PublicField(publicFieldsCount);
+		activePlayer = null;
+		status = "New Game created.";
+		gameIsRunning = false;
+	}
+
+	@Override
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+
+	@Override
+	public void setActivePlayer(Player activePlayer) {
+		this.activePlayer = activePlayer;
+	}
+
+	@Override
+	public boolean isGameRunning() {
+		return gameIsRunning;
+	}
+
+	@Override
+	public void setGameRunning(boolean gameRunning) {
+		this.gameIsRunning = gameRunning;
+	}
+
+	@Override
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@Override
+	public String getStatus() {
+		return status;
 	}
 
 	@Override
@@ -118,6 +162,7 @@ public final class Board implements IBoard {
 				homeFields.get(playerId), finishFields.get(playerId),
 				figuresPerPlayer, isHuman);
 		players.add(newPlayer);
+		activePlayersQueue.add(newPlayer);
 		return newPlayer;
 	}
 
@@ -159,6 +204,16 @@ public final class Board implements IBoard {
 	@Override
 	public List<Player> getPlayers() {
 		return players;
+	}
+
+	@Override
+	public Queue<Player> getActivePlayersQueue() {
+		return activePlayersQueue;
+	}
+
+	@Override
+	public Queue<Player> getFinishedPlayersQueue() {
+		return finishedPlayersQueue;
 	}
 
 	/*

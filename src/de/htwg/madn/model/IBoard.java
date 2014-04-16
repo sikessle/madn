@@ -2,6 +2,7 @@ package de.htwg.madn.model;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * The board which holds a game data.
@@ -77,6 +78,20 @@ public interface IBoard {
 	List<Player> getPlayers();
 
 	/**
+	 * Returns all active players.
+	 * 
+	 * @return the players
+	 */
+	Queue<Player> getActivePlayersQueue();
+
+	/**
+	 * Returns all finished players.
+	 * 
+	 * @return the players
+	 */
+	Queue<Player> getFinishedPlayersQueue();
+
+	/**
 	 * Returns the dice.
 	 * 
 	 * @return The dice
@@ -97,5 +112,17 @@ public interface IBoard {
 	void setGameId(GameId gameId);
 
 	GameId getGameId();
+
+	void setStatus(String statusString);
+
+	String getStatus();
+
+	boolean isGameRunning();
+
+	void setGameRunning(boolean gameRunning);
+
+	Player getActivePlayer();
+
+	void setActivePlayer(Player player);
 
 }

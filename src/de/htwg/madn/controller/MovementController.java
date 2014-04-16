@@ -25,6 +25,10 @@ final class MovementController extends Observable {
 		this.status = "";
 	}
 
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	// true= next player, false=player stays
 	public boolean rollDice(Player player) {
 
@@ -32,6 +36,7 @@ final class MovementController extends Observable {
 		boolean canMove = false;
 
 		if (player == null) {
+			System.out.println("PLAYER IS NULL");
 			return true;
 		}
 

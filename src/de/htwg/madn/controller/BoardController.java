@@ -17,13 +17,6 @@ import de.htwg.madn.util.observer.Observable;
 public final class BoardController extends Observable implements
 		IBoardControllerPort {
 
-	private String status = "";
-	private Player activePlayer;
-	// without finished players
-	private Queue<Player> activePlayersQueue;
-	// finished players
-	private Queue<Player> finishedPlayersQueue;
-	private boolean gameIsRunning;
 	private MovementController movementController;
 	private IBoard model;
 	private final IModelDao modelDao;
@@ -31,23 +24,19 @@ public final class BoardController extends Observable implements
 	@Inject
 	public BoardController(IModelDao modelDao) {
 		this.modelDao = modelDao;
-		this.model = modelDao.createModel();
+		model = modelDao.createModel();
 		init();
 	}
 
 	private void init() {
-		this.activePlayersQueue = new LinkedList<Player>();
-		this.finishedPlayersQueue = new LinkedList<Player>();
-		this.activePlayer = null;
-		this.status = "New Game created.";
-		this.gameIsRunning = false;
-		this.movementController = new MovementController(model);
-		this.movementController.addObserver(this);
+		movementController = new MovementController(model);
+		movementController.addObserver(this);
+		movementController.setStatus(model.getStatus());
 	}
 
 	@Override
 	public void update() {
-		status = movementController.getStatusString();
+		model.setStatus(movementController.getStatusString());
 	}
 
 	/*
@@ -81,12 +70,11 @@ public final class BoardController extends Observable implements
 		Player newPlayer = model.addPlayer(col, name, isHuman);
 
 		if (newPlayer == null) {
-			status = "Maximum amount of players reached: "
-					+ model.getSettings().getMaxPlayers();
+			model.setStatus("Maximum amount of players reached: "
+					+ model.getSettings().getMaxPlayers());
 		} else {
-			activePlayersQueue.add(newPlayer);
-			status = "Player " + newPlayer.getId() + " \""
-					+ newPlayer.getName() + "\" added.";
+			model.setStatus("Player " + newPlayer.getId() + " \""
+					+ newPlayer.getName() + "\" added.");
 		}
 
 		notifyObservers();
@@ -101,10 +89,11 @@ public final class BoardController extends Observable implements
 	public void rollDice() {
 		boolean setNextPlayer = false;
 
-		if (!gameIsRunning) {
-			status = "Please start the game first";
+		if (!model.isGameRunning()) {
+			model.setStatus("Please start the game first");
 		} else {
-			setNextPlayer = movementController.rollDice(activePlayer);
+			setNextPlayer = movementController
+					.rollDice(model.getActivePlayer());
 		}
 
 		if (setNextPlayer) {
@@ -122,7 +111,7 @@ public final class BoardController extends Observable implements
 	public void reset() {
 		model = modelDao.createModel();
 		init();
-		status = "Game State reset.";
+		model.setStatus("Game State reset.");
 		notifyObservers();
 	}
 
@@ -133,8 +122,8 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public void moveFigure(char figureLetter) {
-		boolean setNext = movementController.moveFigure(activePlayer,
-				figureLetter);
+		boolean setNext = movementController.moveFigure(
+				model.getActivePlayer(), figureLetter);
 
 		if (setNext) {
 			setNextActivePlayer();
@@ -147,8 +136,8 @@ public final class BoardController extends Observable implements
 			return;
 		}
 		if (!movementController.hasActiveFigures(player)) {
-			finishedPlayersQueue.add(player);
-			activePlayersQueue.remove(player);
+			model.getFinishedPlayersQueue().add(player);
+			model.getActivePlayersQueue().remove(player);
 		}
 	}
 
@@ -159,17 +148,17 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public void startGame() {
-		if (gameIsRunning) {
-			status = "Spiel laeuft schon!";
-		} else if (activePlayersQueue.size() < model.getSettings()
+		if (model.isGameRunning()) {
+			model.setStatus("Spiel laeuft schon!");
+		} else if (model.getActivePlayersQueue().size() < model.getSettings()
 				.getMinPlayers()) {
-			status = "Too few players. At least "
+			model.setStatus("Too few players. At least "
 					+ model.getSettings().getMinPlayers()
-					+ " players required.";
+					+ " players required.");
 		} else {
 			setNextActivePlayer();
-			status = "Spiel beginnt.";
-			gameIsRunning = true;
+			model.setStatus("Spiel beginnt.");
+			model.setGameRunning(true);
 		}
 		notifyObservers();
 	}
@@ -178,15 +167,16 @@ public final class BoardController extends Observable implements
 		// reset dice
 		model.getDice().resetThrowsCount();
 		// check and maybe remove a finished player
-		handleFinishedPlayer(activePlayer);
+		handleFinishedPlayer(model.getActivePlayer());
 		// get from head and remove
-		activePlayer = activePlayersQueue.poll();
+		Player activePlayer = model.getActivePlayersQueue().poll();
 		// no more Players!
 		if (activePlayer == null) {
 			return;
 		}
+		model.setActivePlayer(activePlayer);
 		// push to tail of queue
-		activePlayersQueue.add(activePlayer);
+		model.getActivePlayersQueue().add(activePlayer);
 	}
 
 	/*
@@ -196,7 +186,7 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public Queue<Player> getFinishedPlayersQueue() {
-		return finishedPlayersQueue;
+		return model.getFinishedPlayersQueue();
 	}
 
 	/*
@@ -216,7 +206,7 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public String getStatusString() {
-		return status;
+		return model.getStatus();
 	}
 
 	/*
@@ -226,7 +216,7 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public Player getActivePlayer() {
-		return activePlayer;
+		return model.getActivePlayer();
 	}
 
 	/*
@@ -236,6 +226,7 @@ public final class BoardController extends Observable implements
 	 */
 	@Override
 	public String getActivePlayerString() {
+		Player activePlayer = model.getActivePlayer();
 		if (activePlayer != null) {
 			return activePlayer.getName();
 		}
@@ -244,18 +235,18 @@ public final class BoardController extends Observable implements
 
 	@Override
 	public boolean gameIsFinished() {
-		return activePlayersQueue.isEmpty() && gameIsRunning;
+		return model.getActivePlayersQueue().isEmpty() && model.isGameRunning();
 	}
 
 	@Override
 	public boolean gameIsRunning() {
-		return this.gameIsRunning;
+		return model.isGameRunning();
 	}
 
 	@Override
 	public GameId saveGame(String comment) {
 		GameId savedGameId = modelDao.storeModel(model, comment);
-		status = "Game saved under id " + savedGameId;
+		model.setStatus("Game saved under id " + savedGameId);
 		return savedGameId;
 	}
 
@@ -277,7 +268,8 @@ public final class BoardController extends Observable implements
 			reset();
 		} else {
 			model = loadedModel;
-			status = "Game with id " + model.getGameId().getId() + " loaded";
+			model.setStatus("Game with id " + model.getGameId().getId()
+					+ " loaded");
 		}
 	}
 
