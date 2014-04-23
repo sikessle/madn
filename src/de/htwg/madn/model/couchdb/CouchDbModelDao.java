@@ -9,6 +9,9 @@ import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import de.htwg.madn.model.GameId;
 import de.htwg.madn.model.IBoard;
 import de.htwg.madn.model.IModelDao;
@@ -16,12 +19,12 @@ import de.htwg.madn.model.IModelDao;
 public class CouchDbModelDao implements IModelDao {
 
 	private CouchDbConnector db = null;
-	
-	public CouchDbModelDao() {
+
+	@Inject
+	public CouchDbModelDao(@Named("couchDBServerUrl") String serverUrl) {
 		HttpClient client = null;
 		try {
-			client = new StdHttpClient.Builder().url(
-					"http://lenny2.in.htwg-konstanz.de:5984").build();
+			client = new StdHttpClient.Builder().url(serverUrl).build();
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -29,11 +32,12 @@ public class CouchDbModelDao implements IModelDao {
 		CouchDbInstance dbInstance = new StdCouchDbInstance(client);
 		db = dbInstance.createConnector("madn_db", true);
 	}
-	
+
 	@Override
 	public IBoard getModel(GameId gameId) {
-		PersistenceBoard board = db.find(PersistenceBoard.class, String.valueOf(gameId.getId()));
-		if(board == null) {
+		PersistenceBoard board = db.find(PersistenceBoard.class,
+				String.valueOf(gameId.getId()));
+		if (board == null) {
 			return null;
 		}
 		return null;
