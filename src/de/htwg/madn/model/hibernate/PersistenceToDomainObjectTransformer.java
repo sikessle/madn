@@ -40,7 +40,7 @@ public class PersistenceToDomainObjectTransformer {
 		result.setFinishFields(transformFinishFields(persistenceBoard
 				.getFinishFields()));
 		result.setGameId(transform(persistenceBoard.getGameId()));
-		result.setGameIsRunning(persistenceBoard.isGameRunning());
+		result.setGameIsRunning(persistenceBoard.isGameIsRunning());
 		result.setHomeFields(transformHomeFields(persistenceBoard
 				.getHomeFields()));
 		result.setMaxPlayers(persistenceBoard.getMaxPlayers());
@@ -153,12 +153,23 @@ public class PersistenceToDomainObjectTransformer {
 		return result;
 	}
 
-	private Player transform(PersistencePlayer player, HomeField homeField,
-			FinishField finishField) {
+	private Player transform(PersistencePlayer player) {
+		// just dummys for constructor
+		HomeField homeField = new HomeField(player.getHomeField()
+				.getExitIndex(), player.getHomeField().getFields().length);
+		FinishField finishField = new FinishField(player.getFinishField()
+				.getEntryIndex(), player.getFinishField().getFields().length);
+
 		Player result = new Player(player.getId(), player.getColor(),
 				player.getName(), homeField, finishField, player.getFigures()
 						.size(), player.isHuman());
 		result.setFigures(transform(player.getFigures(), result));
+
+		homeField = transform(player.getHomeField(), result);
+		finishField = transform(player.getFinishField(), result);
+
+		result.setHomeField(homeField);
+		result.setFinishField(finishField);
 
 		return result;
 	}

@@ -1,7 +1,7 @@
 package de.htwg.madn.model;
 
 public final class PublicField {
-	private final Figure[] fields;
+	private Figure[] fields;
 
 	public PublicField(final int fieldsCount) {
 		fields = new Figure[fieldsCount];
@@ -36,5 +36,9 @@ public final class PublicField {
 
 	public Figure[] getFields() {
 		return fields;
+	}
+
+	public void setFields(Figure[] fields) {
+		this.fields = fields;
 	}
 }

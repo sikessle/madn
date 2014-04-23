@@ -336,4 +336,9 @@ public final class Board implements IBoard {
 	public void setSettings(IGameSettings settings) {
 		this.settings = settings;
 	}
+
+	@Override
+	public void setGameIsRunning(boolean gameIsRunning) {
+		this.gameIsRunning = gameIsRunning;
+	}
 }

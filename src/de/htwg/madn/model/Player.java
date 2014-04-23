@@ -10,8 +10,8 @@ public final class Player {
 	private final Color color;
 	private final String name;
 	private List<Figure> figures;
-	private final FinishField finishField;
-	private final HomeField homeField;
+	private FinishField finishField;
+	private HomeField homeField;
 	private final boolean isHuman;
 	private static final char FIGURE_LETTER_START = 'a';
 
@@ -90,5 +90,13 @@ public final class Player {
 
 	public boolean isHuman() {
 		return isHuman;
+	}
+
+	public void setHomeField(HomeField homeField) {
+		this.homeField = homeField;
+	}
+
+	public void setFinishField(FinishField finishField) {
+		this.finishField = finishField;
 	}
 }
