@@ -1,6 +1,5 @@
 package de.htwg.madn.model.hibernate;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -142,6 +141,9 @@ public class DomainObjectToPersistenceTransformer {
 	}
 
 	private PersistencePlayer transform(Player player) {
+		if (player == null) {
+			return null;
+		}
 		PersistencePlayer persistencePlayer = new PersistencePlayer();
 		persistencePlayer.setColor(player.getColor());
 		persistencePlayer.setFigures(transform(player.getFigures(),
@@ -181,8 +183,15 @@ public class DomainObjectToPersistenceTransformer {
 
 	private PersistenceFigure[] transform(Figure[] fields,
 			PersistencePlayer owner) {
-		return (PersistenceFigure[]) transform(Arrays.asList(fields), owner)
-				.toArray();
+
+		PersistenceFigure[] result = new PersistenceFigure[fields.length];
+
+		for (int i = 0; i < fields.length; i++) {
+			if (fields[i] != null) {
+				result[i] = transform(fields[i], owner);
+			}
+		}
+		return result;
 	}
 
 	private List<PersistenceFigure> transform(List<Figure> figures,
@@ -199,6 +208,9 @@ public class DomainObjectToPersistenceTransformer {
 	private PersistenceFigure transform(Figure fig, PersistencePlayer owner) {
 		PersistenceFigure persistenceFigure = new PersistenceFigure();
 
+		if (fig == null) {
+			return null;
+		}
 		persistenceFigure.setAtFinishArea(fig.isAtFinishArea());
 		persistenceFigure.setAtHomeArea(fig.isAtHomeArea());
 		persistenceFigure.setCurrentFieldIndex(fig.getCurrentFieldIndex());
@@ -211,8 +223,10 @@ public class DomainObjectToPersistenceTransformer {
 
 	public PersistenceGameId transform(GameId gameId) {
 		PersistenceGameId persistenceGameId = new PersistenceGameId();
-		persistenceGameId.setId(gameId.getId());
-		persistenceGameId.setComment(gameId.getComment());
+		if (gameId != null) {
+			persistenceGameId.setId(gameId.getId());
+			persistenceGameId.setComment(gameId.getComment());
+		}
 		return persistenceGameId;
 	}
 }
