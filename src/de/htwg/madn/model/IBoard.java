@@ -125,4 +125,14 @@ public interface IBoard {
 
 	void setActivePlayer(Player player);
 
+	int getDiceMax();
+
+	int getDiceMin();
+
+	int getFiguresPerPlayer();
+
+	int getMaxPlayers();
+
+	int getPublicFieldsCount();
+
 }

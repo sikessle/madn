@@ -59,6 +59,21 @@ public final class Board implements IBoard {
 	}
 
 	@Override
+	public int getDiceMax() {
+		return diceMax;
+	}
+
+	@Override
+	public int getDiceMin() {
+		return diceMin;
+	}
+
+	@Override
+	public int getFiguresPerPlayer() {
+		return figuresPerPlayer;
+	}
+
+	@Override
 	public Player getActivePlayer() {
 		return activePlayer;
 	}
@@ -71,6 +86,16 @@ public final class Board implements IBoard {
 	@Override
 	public boolean isGameRunning() {
 		return gameIsRunning;
+	}
+
+	@Override
+	public int getMaxPlayers() {
+		return maxPlayers;
+	}
+
+	@Override
+	public int getPublicFieldsCount() {
+		return publicFieldsCount;
 	}
 
 	@Override

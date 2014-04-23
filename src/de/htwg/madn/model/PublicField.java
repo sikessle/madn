@@ -18,19 +18,23 @@ public final class PublicField {
 		fields[fieldIndex] = figure;
 		figure.setCurrentFieldIndex(fieldIndex);
 	}
-	
+
 	public Figure getFigure(final int fieldIndex) {
 		checkLegalFieldAccess(fieldIndex);
 		return fields[fieldIndex];
 	}
-	
+
 	public int getSize() {
 		return fields.length;
 	}
-	
+
 	private void checkLegalFieldAccess(final int fieldIndex) {
 		if (fieldIndex < 0 || fieldIndex > fields.length) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
+	}
+
+	public Figure[] getFields() {
+		return fields;
 	}
 }
