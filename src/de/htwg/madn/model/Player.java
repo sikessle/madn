@@ -9,7 +9,7 @@ public final class Player {
 	private final int id;
 	private final Color color;
 	private final String name;
-	private final List<Figure> figures;
+	private List<Figure> figures;
 	private final FinishField finishField;
 	private final HomeField homeField;
 	private final boolean isHuman;
@@ -18,12 +18,12 @@ public final class Player {
 	public Player(final int x, final Color color, final String name,
 			final HomeField homeField, final FinishField finishField,
 			final int figuresCount, boolean isHuman) {
-		
+
 		if (homeField == null || finishField == null) {
 			throw new IllegalArgumentException(
 					"homeField and finishField cant be null");
 		}
-		
+
 		this.id = x;
 		this.color = color;
 		this.name = name;
@@ -37,7 +37,7 @@ public final class Player {
 		addFigures(figuresCount);
 		occupyHomeField();
 	}
-	
+
 	private void addFigures(int figuresCount) {
 		for (int i = 0; i < figuresCount; i++) {
 			char letter = (char) (FIGURE_LETTER_START + id * figuresCount + i);
@@ -74,6 +74,10 @@ public final class Player {
 
 	public List<Figure> getFigures() {
 		return figures;
+	}
+
+	public void setFigures(List<Figure> figures) {
+		this.figures = figures;
 	}
 
 	public FinishField getFinishField() {

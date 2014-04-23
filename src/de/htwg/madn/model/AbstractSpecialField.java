@@ -3,7 +3,7 @@ package de.htwg.madn.model;
 public abstract class AbstractSpecialField {
 
 	private Player owner;
-	private final Figure[] fields;
+	private Figure[] fields;
 
 	public AbstractSpecialField(final int fieldSize) {
 		owner = null;
@@ -40,6 +40,10 @@ public abstract class AbstractSpecialField {
 
 	public Figure[] getFields() {
 		return fields;
+	}
+
+	public void setFields(Figure[] fields) {
+		this.fields = fields;
 	}
 
 	public boolean isEmpty() {

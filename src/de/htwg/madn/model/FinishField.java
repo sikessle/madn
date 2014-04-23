@@ -1,13 +1,13 @@
 package de.htwg.madn.model;
 
 public final class FinishField extends AbstractSpecialField {
-	private final int entryIndex;
-	
+	private int entryIndex;
+
 	public FinishField(final int entryIndex, final int fieldsCount) {
 		super(fieldsCount);
 		this.entryIndex = entryIndex;
 	}
-	
+
 	@Override
 	public int getEntryIndex() {
 		return entryIndex;
@@ -15,7 +15,12 @@ public final class FinishField extends AbstractSpecialField {
 
 	@Override
 	public int getExitIndex() {
-		throw new UnsupportedOperationException("finish field has no exit index");
+		throw new UnsupportedOperationException(
+				"finish field has no exit index");
 	}
-	
+
+	public void setEntryIndex(int entryIndex) {
+		this.entryIndex = entryIndex;
+	}
+
 }

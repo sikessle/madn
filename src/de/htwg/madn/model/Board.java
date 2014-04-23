@@ -20,13 +20,13 @@ public final class Board implements IBoard {
 	private String status = "";
 
 	private PublicField publicField;
-	private final int maxPlayers;
-	private final int figuresPerPlayer;
-	private final int publicFieldsCount;
-	private final int diceMin;
-	private final int diceMax;
+	private int maxPlayers;
+	private int figuresPerPlayer;
+	private int publicFieldsCount;
+	private int diceMin;
+	private int diceMax;
 	private Dice dice;
-	private final IGameSettings settings;
+	private IGameSettings settings;
 	private GameId gameId;
 
 	@Inject
@@ -269,5 +269,71 @@ public final class Board implements IBoard {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void setActivePlayersQueue(Queue<Player> transform) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setDice(Dice dice) {
+		this.dice = dice;
+	}
+
+	@Override
+	public void setDiceMax(int diceMax) {
+		this.diceMax = diceMax;
+	}
+
+	@Override
+	public void setDiceMin(int diceMin) {
+		this.diceMin = diceMin;
+	}
+
+	@Override
+	public void setFiguresPerPlayer(int figuresPerPlayer) {
+		this.figuresPerPlayer = figuresPerPlayer;
+	}
+
+	@Override
+	public void setFinishedPlayersQueue(Queue<Player> finishedPlayersQueue) {
+		this.finishedPlayersQueue = finishedPlayersQueue;
+	}
+
+	@Override
+	public void setFinishFields(List<FinishField> finishFields) {
+		this.finishFields = finishFields;
+	}
+
+	@Override
+	public void setHomeFields(List<HomeField> homeFields) {
+		this.homeFields = homeFields;
+	}
+
+	@Override
+	public void setMaxPlayers(int maxPlayers) {
+		this.maxPlayers = maxPlayers;
+	}
+
+	@Override
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+
+	@Override
+	public void setPublicField(PublicField publicField) {
+		this.publicField = publicField;
+	}
+
+	@Override
+	public void setPublicFieldsCount(int publicFieldsCount) {
+		this.publicFieldsCount = publicFieldsCount;
+	}
+
+	@Override
+	public void setSettings(IGameSettings settings) {
+		this.settings = settings;
 	}
 }

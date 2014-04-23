@@ -135,4 +135,30 @@ public interface IBoard {
 
 	int getPublicFieldsCount();
 
+	void setActivePlayersQueue(Queue<Player> transform);
+
+	void setDice(Dice transform);
+
+	void setDiceMax(int diceMax);
+
+	void setDiceMin(int diceMin);
+
+	void setFiguresPerPlayer(int figuresPerPlayer);
+
+	void setFinishedPlayersQueue(Queue<Player> transform);
+
+	void setFinishFields(List<FinishField> transformFinishFields);
+
+	void setHomeFields(List<HomeField> transformHomeFields);
+
+	void setMaxPlayers(int maxPlayers);
+
+	void setPlayers(List<Player> transform);
+
+	void setPublicField(PublicField transform);
+
+	void setPublicFieldsCount(int publicFieldsCount);
+
+	void setSettings(IGameSettings transform);
+
 }
