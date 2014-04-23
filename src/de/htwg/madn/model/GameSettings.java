@@ -1,15 +1,15 @@
 package de.htwg.madn.model;
 
 public final class GameSettings implements IGameSettings {
-	private final int minPlayers;
-	private final int maxPlayers;
-	private final int figuresPerPlayer;
-	private final int publicFieldsCount;
-	private final int diceMin;
-	private final int diceMax;
-	private final int minNumberToExitHome;
-	private final int throwsAllowedInHome;
-	private final int throwsAllowedInPublic;
+	private int minPlayers;
+	private int maxPlayers;
+	private int figuresPerPlayer;
+	private int publicFieldsCount;
+	private int diceMin;
+	private int diceMax;
+	private int minNumberToExitHome;
+	private int throwsAllowedInHome;
+	private int throwsAllowedInPublic;
 
 	public GameSettings(int minPlayers, int maxPlayers, int figuresPerPlayer,
 			int publicFieldsCount, int diceMin, int diceMax,
@@ -35,7 +35,7 @@ public final class GameSettings implements IGameSettings {
 		verifyPublicFieldsSettings();
 		verifyThrowsAllowedSettings();
 	}
-	
+
 	private void verifyPlayerSettings() {
 		if (minPlayers > maxPlayers || minPlayers < 1) {
 			throw new IllegalArgumentException("player settings not valid");
@@ -61,8 +61,10 @@ public final class GameSettings implements IGameSettings {
 					"throws allowed settings not valid");
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getMinPlayers()
 	 */
 	@Override
@@ -70,7 +72,9 @@ public final class GameSettings implements IGameSettings {
 		return minPlayers;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getMaxPlayers()
 	 */
 	@Override
@@ -78,7 +82,9 @@ public final class GameSettings implements IGameSettings {
 		return maxPlayers;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getFiguresPerPlayer()
 	 */
 	@Override
@@ -86,7 +92,9 @@ public final class GameSettings implements IGameSettings {
 		return figuresPerPlayer;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getPublicFieldsCount()
 	 */
 	@Override
@@ -94,7 +102,9 @@ public final class GameSettings implements IGameSettings {
 		return publicFieldsCount;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getDiceMin()
 	 */
 	@Override
@@ -102,7 +112,9 @@ public final class GameSettings implements IGameSettings {
 		return diceMin;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getDiceMax()
 	 */
 	@Override
@@ -110,7 +122,9 @@ public final class GameSettings implements IGameSettings {
 		return diceMax;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getMinNumberToExitHome()
 	 */
 	@Override
@@ -118,7 +132,9 @@ public final class GameSettings implements IGameSettings {
 		return minNumberToExitHome;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getThrowsAllowedInHome()
 	 */
 	@Override
@@ -126,12 +142,59 @@ public final class GameSettings implements IGameSettings {
 		return throwsAllowedInHome;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.htwg.madn.model.IGameSettings#getThrowsAllowedInPublic()
 	 */
 	@Override
 	public int getThrowsAllowedInPublic() {
 		return throwsAllowedInPublic;
 	}
-	
+
+	@Override
+	public void setMinPlayers(int minPlayers) {
+		this.minPlayers = minPlayers;
+	}
+
+	@Override
+	public void setMaxPlayers(int maxPlayers) {
+		this.maxPlayers = maxPlayers;
+	}
+
+	@Override
+	public void setFiguresPerPlayer(int figuresPerPlayer) {
+		this.figuresPerPlayer = figuresPerPlayer;
+	}
+
+	@Override
+	public void setPublicFieldsCount(int publicFieldsCount) {
+		this.publicFieldsCount = publicFieldsCount;
+	}
+
+	@Override
+	public void setDiceMin(int diceMin) {
+		this.diceMin = diceMin;
+	}
+
+	@Override
+	public void setDiceMax(int diceMax) {
+		this.diceMax = diceMax;
+	}
+
+	@Override
+	public void setMinNumberToExitHome(int minNumberToExitHome) {
+		this.minNumberToExitHome = minNumberToExitHome;
+	}
+
+	@Override
+	public void setThrowsAllowedInHome(int throwsAllowedInHome) {
+		this.throwsAllowedInHome = throwsAllowedInHome;
+	}
+
+	@Override
+	public void setThrowsAllowedInPublic(int throwsAllowedInPublic) {
+		this.throwsAllowedInPublic = throwsAllowedInPublic;
+	}
+
 }

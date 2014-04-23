@@ -161,4 +161,6 @@ public interface IBoard {
 
 	void setSettings(IGameSettings transform);
 
+	void setGameIsRunning(boolean gameIsRunning);
+
 }
